@@ -29,6 +29,11 @@
                     
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <a href="{{ route('dashboard') }}" 
+                           class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 {{ request()->routeIs('dashboard') ? 'border-indigo-500' : 'border-transparent hover:border-gray-300' }}">
+                            Dashboard
+                        </a>
+                        
                         <a href="{{ route('articles.index') }}" 
                            class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2 {{ request()->routeIs('articles.index') ? 'border-indigo-500' : 'border-transparent hover:border-gray-300' }}">
                             Home
