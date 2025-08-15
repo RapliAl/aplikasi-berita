@@ -16,8 +16,8 @@ class AdminPanelAccess
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if user is authenticated and has access to admin panel
-        if (!Auth::check() || !Auth::user()->can('access-admin-panel')) {
+        // Check if user is authenticated and has Admin or Author role
+        if (!Auth::check() || (!Auth::user()->hasRole('Admin') && !Auth::user()->hasRole('Author'))) {
             abort(403, 'Access denied. You do not have permission to access the admin panel.');
         }
 
