@@ -30,6 +30,34 @@ class User extends Authenticatable
         return $this->hasMany(Article::class, 'user_id');
     }
 
+    public function articleViews()
+    {
+        return $this->hasMany(ArticleView::class);
+    }
+
+    public function viewedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_views')
+                    ->withTimestamps()
+                    ->withPivot('viewed_at');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function likedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'likes')
+                    ->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

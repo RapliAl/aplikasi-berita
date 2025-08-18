@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\ArticleView;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Comment;
@@ -41,6 +42,16 @@ class ArticleController extends Controller
 
         $article->load(['user', 'category', 'tags', 'comments.user']);
         
+        // Track article view for authenticated users
+        if (Auth::check()) {
+            ArticleView::firstOrCreate([
+                'user_id' => Auth::id(),
+                'article_id' => $article->id,
+            ], [
+                'viewed_at' => now(),
+            ]);
+        }
+        
         // Get related articles
         $relatedArticles = Article::where('category_id', $article->category_id)
             ->where('id', '!=', $article->id)
@@ -56,8 +67,9 @@ class ArticleController extends Controller
         }
 
         $likesCount = Like::where('article_id', $article->id)->count();
+        $viewsCount = ArticleView::where('article_id', $article->id)->count();
 
-        return view('frontend.articles.show', compact('article', 'relatedArticles', 'userLiked', 'likesCount'));
+        return view('frontend.articles.show', compact('article', 'relatedArticles', 'userLiked', 'likesCount', 'viewsCount'));
     }
 
     /**

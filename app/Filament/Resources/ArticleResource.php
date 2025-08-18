@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
 
 class ArticleResource extends Resource
 {
@@ -46,21 +47,12 @@ class ArticleResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Select::make('category_id')
                     ->label('Category')
-                    ->options([
-                        1 => 'Technology',
-                        2 => 'Politics', 
-                        3 => 'Sports',
-                    ])
+                    ->options(fn () => Category::all()->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('tag_ids')
                     ->label('Tags')
                     ->multiple()
-                    ->options([
-                        1 => 'Breaking News',
-                        2 => 'Analysis',
-                        3 => 'Opinion',
-                        4 => 'Review',
-                    ])
+                    ->options(fn () => \App\Models\Tag::all()->pluck('name', 'id'))
                     ->dehydrated(false)
                     ->afterStateUpdated(function ($state, $record) {
                         if ($record && $state) {
@@ -125,13 +117,9 @@ class ArticleResource extends Resource
                         'published' => 'Published',
                         'archived' => 'Archived',
                     ]),
-                Tables\Filters\SelectFilter::make('category_id')
+                Tables\Filters\SelectFilter::make('category_id ')
                     ->label('Category')
-                    ->options([
-                        1 => 'Technology',
-                        2 => 'Politics',
-                        3 => 'Sports',
-                    ]),
+                    ->options(Category::all()->pluck('name', 'id'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

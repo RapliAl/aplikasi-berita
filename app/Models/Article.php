@@ -46,6 +46,18 @@ class Article extends Model
         return $this->hasMany(Like::class);
     }
 
+    public function views()
+    {
+        return $this->hasMany(ArticleView::class);
+    }
+
+    public function viewers()
+    {
+        return $this->belongsToMany(User::class, 'article_views')
+                    ->withTimestamps()
+                    ->withPivot('viewed_at');
+    }
+
     public function banners()
     {
         return $this->hasOne(Banner::class);
@@ -58,6 +70,25 @@ class Article extends Model
         }
         
         return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    public function isViewedBy($user)
+    {
+        if (!$user) {
+            return false;
+        }
+        
+        return $this->views()->where('user_id', $user->id)->exists();
+    }
+
+    public function getViewsCount()
+    {
+        return $this->views()->count();
+    }
+
+    public function getLikesCount()
+    {
+        return $this->likes()->count();
     }
 
 }
