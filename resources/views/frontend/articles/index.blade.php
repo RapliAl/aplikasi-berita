@@ -12,7 +12,7 @@
                     <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                         <span class="block">Latest News From</span>
                         <span class="block bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-400">
-                            Berita Indonesia 
+                            BlogPedia
                         </span>
                     </h1>
                     <p class="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto">
@@ -543,22 +543,22 @@
                                             d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <h3 class="text-xl font-bold mb-2">Stay Updated!</h3>
-                                <p class="text-sm opacity-90 mb-6">Get the latest news delivered directly to your inbox</p>
+                                <h3 class="text-xl font-bold mb-2">Become the Next News Writer!</h3>
+                                <p class="text-sm opacity-90 mb-6">If you want to write news, include your email below.</p>
                                 <form class="space-y-3">
                                     <input type="email" placeholder="Enter your email"
                                         class="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
                                     <button type="submit"
                                         class="w-full bg-white text-orange-600 font-semibold py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
-                                        Subscribe Now
+                                        Submit
                                     </button>
                                 </form>
-                                <p class="text-xs opacity-75 mt-3">No spam, unsubscribe anytime</p>
+                                <p class="text-xs opacity-75 mt-3">No spam, cancel anytime</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Quick Links -->
+                    {{-- <!-- Quick Links -->
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -605,7 +605,7 @@
                                     Terms of Service
                                 </a></li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

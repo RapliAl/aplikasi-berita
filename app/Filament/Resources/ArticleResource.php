@@ -49,7 +49,7 @@ class ArticleResource extends Resource
                     ->label('Category')
                     ->options(fn () => Category::all()->pluck('name', 'id'))
                     ->required(),
-                Forms\Components\Select::make('tag_ids')
+                Forms\Components\Select::make('tag_id')
                     ->label('Tags')
                     ->multiple()
                     ->options(fn () => \App\Models\Tag::all()->pluck('name', 'id'))
@@ -89,12 +89,7 @@ class ArticleResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category_id')
                     ->label('Category')
-                    ->formatStateUsing(fn ($state) => match($state) {
-                        1 => 'Technology',
-                        2 => 'Politics',
-                        3 => 'Sports',
-                        default => 'Unknown'
-                    }),
+                    ->formatStateUsing(fn ($state) => Category::find($state)->name ?? 'N/A'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {

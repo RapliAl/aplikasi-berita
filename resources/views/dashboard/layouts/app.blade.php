@@ -16,7 +16,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-white-100 dark:bg-white-900">
-            @include('layouts.navigation')
+            @include('dashboard.layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)

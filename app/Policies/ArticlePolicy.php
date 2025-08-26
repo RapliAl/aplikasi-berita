@@ -2,18 +2,20 @@
 
 namespace App\Policies;
 
-use App\Models\Article;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Models\Article;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ArticlePolicy
 {
+    use HandlesAuthorization;
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-articles');
+        return $user->can('view_any_article');
     }
 
     /**
@@ -21,7 +23,7 @@ class ArticlePolicy
      */
     public function view(User $user, Article $article): bool
     {
-        return $user->can('view-articles');
+        return $user->can('view_article');
     }
 
     /**
@@ -29,7 +31,7 @@ class ArticlePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create-articles');
+        return $user->can('create_article');
     }
 
     /**
@@ -37,17 +39,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article): bool
     {
-        // Admin can edit any article
-        if ($user->can('edit-articles')) {
-            return true;
-        }
-        
-        // Author can edit their own articles
-        if ($user->can('edit-own-articles') && $user->id === $article->user_id) {
-            return true;
-        }
-        
-        return false;
+        return $user->can('update_article');
     }
 
     /**
@@ -55,32 +47,62 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): bool
     {
-        // Admin can delete any article
-        if ($user->can('delete-articles')) {
-            return true;
-        }
-        
-        // Author can delete their own articles
-        if ($user->can('delete-own-articles') && $user->id === $article->user_id) {
-            return true;
-        }
-        
-        return false;
+        return $user->can('delete_article');
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can bulk delete.
      */
-    public function restore(User $user, Article $article): bool
+    public function deleteAny(User $user): bool
     {
-        return $user->can('delete-articles');
+        return $user->can('delete_any_article');
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete.
      */
     public function forceDelete(User $user, Article $article): bool
     {
-        return $user->can('delete-articles');
+        return $user->can('force_delete_article');
+    }
+
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
+    {
+        return $user->can('force_delete_any_article');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Article $article): bool
+    {
+        return $user->can('restore_article');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_article');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Article $article): bool
+    {
+        return $user->can('replicate_article');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_article');
     }
 }

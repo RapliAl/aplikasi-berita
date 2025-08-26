@@ -360,14 +360,14 @@
                     </div>
                 @endif
 
-                <!-- Newsletter -->
+                <!-- BlogPedia Author -->
                 <div class="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-2xl shadow-xl p-6 text-white">
                     <div class="text-center">
                         <svg class="w-12 h-12 text-blue-200 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
-                        <h3 class="text-xl font-bold mb-2">Berlangganan Newsletter</h3>
-                        <p class="text-blue-100 text-sm mb-4">Dapatkan artikel terbaru langsung di email Anda</p>
+                        <h3 class="text-xl font-bold mb-2">BlogPedia Author</h3>
+                        <p class="text-blue-100 text-sm mb-4">If you want to write news, include your email below.</p>
                         
                         <form class="space-y-3">
                             <input type="email" 
@@ -375,7 +375,7 @@
                                    class="w-full px-4 py-3 rounded-xl border-0 bg-white/20 text-white placeholder-blue-200 focus:ring-2 focus:ring-white/50 focus:bg-white/30 transition-all duration-200 backdrop-blur-sm">
                             <button type="submit" 
                                     class="w-full bg-white text-blue-600 py-3 rounded-xl font-medium hover:bg-blue-50 transition-colors duration-200 shadow-lg">
-                                Berlangganan
+                                Submit
                             </button>
                         </form>
                     </div>

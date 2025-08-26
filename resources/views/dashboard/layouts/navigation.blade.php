@@ -4,8 +4,8 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center text-2xl block h-16 w-auto fill-current text-gray-800 dark:text-gray-200 font-sans antialiased" style="color: white;">
-                    <a href="{{ route('articles.index') }}">
+                <div class="shrink-0 flex items-center text-2xl block h-16 w-auto fill-current text-gray-800 dark:text-gray-200 font-bold antialiased" style="color: white;">
+                    <a href="{{ route('home') }}">
                         {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" /> --}}
                         BlogPedia
                     </a>
@@ -16,7 +16,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('articles.index')" :active="request()->routeIs('articles.index')">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('articles.index')">
                         {{ __('Home') }}
                     </x-nav-link>
                 </div>
