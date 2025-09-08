@@ -49,7 +49,8 @@ class CommentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('article.title')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge(fn ($state) => $state ? 'Has Comments' : 'No Comments'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Commenter')
                     ->searchable()
@@ -83,12 +84,22 @@ class CommentResource extends Resource
 
     public static function canAccess(): bool
     {
-        return Auth::user()->can('view-comments');
+        return Auth::user()->can('view_any_comment');
     }
 
     public static function canCreate(): bool
     {
-        return Auth::user()->can('create-comments');
+        return Auth::user()->can('create_comment');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Auth::user()->can('update_comment');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return Auth::user()->can('delete_comment');
     }
 
     public static function getRelations(): array

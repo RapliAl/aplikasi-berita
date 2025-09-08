@@ -12,9 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->string('name')->unique()->after('id');
-            $table->string('slug')->unique()->after('name');
-            $table->text('description')->nullable()->after('slug');
+            // Check if columns don't already exist before adding them
+            if (!Schema::hasColumn('categories', 'name')) {
+                $table->string('name')->unique()->after('id');
+            }
+            if (!Schema::hasColumn('categories', 'slug')) {
+                $table->string('slug')->unique()->after('name');
+            }
+            if (!Schema::hasColumn('categories', 'description')) {
+                $table->text('description')->nullable()->after('slug');
+            }
         });
     }
 

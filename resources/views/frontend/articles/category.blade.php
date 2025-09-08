@@ -1,4 +1,4 @@
-@extends('frontend.layouts.app')
+s@extends('frontend.layouts.app')
 
 @section('title', 'Articles in ' . $category->name)
 
@@ -77,9 +77,11 @@
                                     @if($article->tags->count() > 0)
                                         <div class="flex flex-wrap gap-2 mb-4">
                                             @foreach($article->tags as $tag)
-                                                <a href="{{ route('articles.tag', $tag->slug) }}" class="inline-block bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 text-xs px-2 py-1 rounded transition-colors duration-200">
-                                                    #{{ $tag->name }}
-                                                </a>
+                                                @if($tag->slug)
+                                                    <a href="{{ route('articles.tag', $tag->slug) }}" class="inline-block bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 text-xs px-2 py-1 rounded transition-colors duration-200">
+                                                        #{{ $tag->name }}
+                                                    </a>
+                                                @endif
                                             @endforeach
                                         </div>
                                     @endif
@@ -141,15 +143,17 @@
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Other Categories</h3>
                     <ul class="space-y-2">
                         @foreach($otherCategories as $otherCategory)
-                            <li>
-                                <a href="{{ route('articles.category_id', $otherCategory->slug) }}" 
-                                   class="flex items-center justify-between text-gray-600 hover:text-indigo-600 transition-colors duration-200">
-                                    <span>{{ $otherCategory->name }}</span>
-                                    <span class="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-full">
-                                        {{ $otherCategory->articles_count }}
-                                    </span>
+                            @if($otherCategory->slug)
+                                <li>
+                                    <a href="{{ route('articles.category', $otherCategory->slug) }}" 
+                                       class="flex items-center justify-between text-gray-600 hover:text-indigo-600 transition-colors duration-200">
+                                        <span>{{ $otherCategory->name }}</span>
+                                        <span class="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-full">
+                                            {{ $otherCategory->articles_count }}
+                                        </span>
                                 </a>
                             </li>
+                            @endif
                         @endforeach
                     </ul>
                 </div>

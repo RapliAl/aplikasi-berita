@@ -46,9 +46,9 @@
                                 <!-- Article Content -->
                                 <div class="lg:w-2/3 p-6">
                                     <!-- Category Badge -->
-                                    @if($article->category)
+                                    @if($article->category && $article->category->slug)
                                         <div class="mb-3">
-                                            <a href="{{ route('articles.category_id', $article->category->slug) }}" class="inline-block bg-indigo-100 text-indigo-800 text-sm px-3 py-1 rounded-full hover:bg-indigo-200 transition-colors duration-200">
+                                            <a href="{{ route('articles.category', $article->category->slug) }}" class="inline-block bg-indigo-100 text-indigo-800 text-sm px-3 py-1 rounded-full hover:bg-indigo-200 transition-colors duration-200">
                                                 {{ $article->category->name }}
                                             </a>
                                         </div>
@@ -88,10 +88,12 @@
                                     @if($article->tags->count() > 0)
                                         <div class="flex flex-wrap gap-2 mb-4">
                                             @foreach($article->tags as $articleTag)
-                                                <a href="{{ route('articles.tag', $articleTag->slug) }}" 
-                                                   class="inline-block text-xs px-2 py-1 rounded transition-colors duration-200 {{ $articleTag->id === $tag->id ? 'bg-indigo-200 text-indigo-800' : 'bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700' }}">
-                                                    #{{ $articleTag->name }}
-                                                </a>
+                                                @if($articleTag->slug)
+                                                    <a href="{{ route('articles.tag', $articleTag->slug) }}" 
+                                                       class="inline-block text-xs px-2 py-1 rounded transition-colors duration-200 {{ $articleTag->id === $tag->id ? 'bg-indigo-200 text-indigo-800' : 'bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700' }}">
+                                                        #{{ $articleTag->name }}
+                                                    </a>
+                                                @endif
                                             @endforeach
                                         </div>
                                     @endif
@@ -153,11 +155,13 @@
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Popular Tags</h3>
                     <div class="flex flex-wrap gap-2">
                         @foreach($popularTags as $popularTag)
-                            <a href="{{ route('articles.tag', $popularTag->slug) }}" 
-                               class="inline-block text-sm px-3 py-1 rounded-full transition-colors duration-200 {{ $popularTag->id === $tag->id ? 'bg-indigo-200 text-indigo-800' : 'bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700' }}">
-                                #{{ $popularTag->name }}
+                            @if($popularTag->slug)
+                                <a href="{{ route('articles.tag', $popularTag->slug) }}" 
+                                   class="inline-block text-sm px-3 py-1 rounded-full transition-colors duration-200 {{ $popularTag->id === $tag->id ? 'bg-indigo-200 text-indigo-800' : 'bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700' }}">
+                                    #{{ $popularTag->name }}
                                 <span class="text-xs">{{ $popularTag->articles_count }}</span>
                             </a>
+                            @endif
                         @endforeach
                     </div>
                 </div>

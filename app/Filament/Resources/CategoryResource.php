@@ -17,6 +17,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryResource extends Resource
 {
@@ -74,6 +75,26 @@ class CategoryResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function canAccess(): bool
+    {
+        return Auth::user()->can('view_any_category');
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::user()->can('create_category');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return Auth::user()->can('update_category');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return Auth::user()->can('delete_category');
     }
 
     public static function getPages(): array

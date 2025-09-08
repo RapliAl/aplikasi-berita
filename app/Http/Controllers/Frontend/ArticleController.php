@@ -81,7 +81,7 @@ class ArticleController extends Controller
             return redirect()->route('login')->with('error', 'You must be logged in to comment.');
         }
 
-        if (!Auth::user()->can('create-comments')) {
+        if (!Auth::user()->can('create_comment')) {
             abort(403, 'You do not have permission to create comments.');
         }
 
@@ -107,7 +107,7 @@ class ArticleController extends Controller
             return response()->json(['error' => 'You must be logged in to like.'], 401);
         }
 
-        if (!Auth::user()->can('create-likes')) {
+        if (!Auth::user()->can('create_like')) {
             return response()->json(['error' => 'You do not have permission to like articles.'], 403);
         }
 

@@ -12,7 +12,7 @@
                     <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                         <span class="block">Latest News From</span>
                         <span class="block bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-400">
-                            BlogPedia
+                            Berita Indonesia 
                         </span>
                     </h1>
                     <p class="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto">
@@ -129,12 +129,14 @@
                                 class="ml-2 bg-indigo-200 text-indigo-700 text-xs px-2 py-1 rounded-full">{{ $articles->total() }}</span>
                         </a>
                         @foreach($categories as $category)
-                            <a href="{{ route('articles.category_id', $category->slug) }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105 font-medium">
-                                {{ $category->name }}
-                                <span
-                                    class="ml-2 bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">{{ $category->articles_count ?? 0 }}</span>
-                            </a>
+                            @if($category->slug)
+                                <a href="{{ route('articles.category', $category->slug) }}"
+                                    class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 transform hover:scale-105 font-medium">
+                                    {{ $category->name }}
+                                    <span
+                                        class="ml-2 bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">{{ $category->articles_count ?? 0 }}</span>
+                                </a>
+                            @endif
                         @endforeach
                     </div>
                 </div>
@@ -296,9 +298,9 @@
                                                 @endif
 
                                                 <!-- Category Badge -->
-                                                @if($article->category)
+                                                @if($article->category && $article->category->slug)
                                                     <div class="absolute top-3 left-3">
-                                                        <a href="{{ route('articles.category_id', $article->category->slug) }}"
+                                                        <a href="{{ route('articles.category', $article->category->slug) }}"
                                                             class="bg-white bg-opacity-90 backdrop-blur-sm text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold shadow-lg hover:bg-indigo-100 transition-colors duration-200">
                                                             {{ $article->category->name }}
                                                         </a>
@@ -386,10 +388,12 @@
                                                 @if($article->tags->count() > 0)
                                                     <div class="flex flex-wrap gap-1 mb-4">
                                                         @foreach($article->tags->take(3) as $tag)
-                                                            <a href="{{ route('articles.tag', $tag->slug) }}"
-                                                                class="bg-gray-100 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700 text-xs px-2 py-1 rounded-full transition-colors duration-200">
-                                                                #{{ $tag->name }}
-                                                            </a>
+                                                            @if($tag->slug)
+                                                                <a href="{{ route('articles.tag', $tag->slug) }}"
+                                                                    class="bg-gray-100 text-gray-600 hover:bg-indigo-100 hover:text-indigo-700 text-xs px-2 py-1 rounded-full transition-colors duration-200">
+                                                                    #{{ $tag->name }}
+                                                                </a>
+                                                            @endif
                                                         @endforeach
                                                     </div>
                                                 @endif
@@ -459,12 +463,13 @@
                             <div class="p-6">
                                 <ul class="space-y-3">
                                     @foreach($categories as $category)
-                                        <li>
-                                            <a href="{{ route('articles.category_id', $category->slug) }}"
-                                                class="group flex items-center justify-between p-3 rounded-lg hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 transition-all duration-200">
-                                                <div class="flex items-center">
-                                                    <div
-                                                        class="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
+                                        @if($category->slug)
+                                            <li>
+                                                <a href="{{ route('articles.category', $category->slug) }}"
+                                                    class="group flex items-center justify-between p-3 rounded-lg hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 transition-all duration-200">
+                                                    <div class="flex items-center">
+                                                        <div
+                                                            class="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-200">
                                                         <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -493,6 +498,7 @@
                                                 </div>
                                             </a>
                                         </li>
+                                        @endif
                                     @endforeach
                                 </ul>
                             </div>
@@ -514,10 +520,11 @@
                             <div class="p-6">
                                 <div class="flex flex-wrap gap-3">
                                     @foreach($tags->take(10) as $tag)
-                                        <a href="{{ route('articles.tag', $tag->slug) }}"
-                                            class="group inline-flex items-center bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-indigo-200 text-gray-700 hover:text-indigo-700 px-4 py-2 rounded-full transition-all duration-200 transform hover:scale-105 hover:shadow-md">
-                                            <svg class="w-3 h-3 mr-1 group-hover:rotate-12 transition-transform duration-200"
-                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        @if($tag->slug)
+                                            <a href="{{ route('articles.tag', $tag->slug) }}"
+                                                class="group inline-flex items-center bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-indigo-200 text-gray-700 hover:text-indigo-700 px-4 py-2 rounded-full transition-all duration-200 transform hover:scale-105 hover:shadow-md">
+                                                <svg class="w-3 h-3 mr-1 group-hover:rotate-12 transition-transform duration-200"
+                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                             </svg>
@@ -525,6 +532,7 @@
                                             <span
                                                 class="ml-2 bg-white bg-opacity-70 text-xs px-2 py-1 rounded-full">{{ $tag->articles_count ?? 0 }}</span>
                                         </a>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -543,22 +551,22 @@
                                             d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <h3 class="text-xl font-bold mb-2">Become the Next News Writer!</h3>
-                                <p class="text-sm opacity-90 mb-6">If you want to write news, include your email below.</p>
+                                <h3 class="text-xl font-bold mb-2">Stay Updated!</h3>
+                                <p class="text-sm opacity-90 mb-6">Get the latest news delivered directly to your inbox</p>
                                 <form class="space-y-3">
                                     <input type="email" placeholder="Enter your email"
                                         class="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
                                     <button type="submit"
                                         class="w-full bg-white text-orange-600 font-semibold py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
-                                        Submit
+                                        Subscribe Now
                                     </button>
                                 </form>
-                                <p class="text-xs opacity-75 mt-3">No spam, cancel anytime</p>
+                                <p class="text-xs opacity-75 mt-3">No spam, unsubscribe anytime</p>
                             </div>
                         </div>
                     </div>
 
-                    {{-- <!-- Quick Links -->
+                    <!-- Quick Links -->
                     <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -605,7 +613,7 @@
                                     Terms of Service
                                 </a></li>
                         </ul>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>

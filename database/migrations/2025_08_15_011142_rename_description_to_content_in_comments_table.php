@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->renameColumn('description', 'content');
-        });
+        // Check if description column exists before renaming
+        if (Schema::hasColumn('comments', 'description')) {
+            Schema::table('comments', function (Blueprint $table) {
+                $table->renameColumn('description', 'content');
+            });
+        }
+        // If content column already exists, do nothing
     }
 
     /**
@@ -21,8 +25,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
-            $table->renameColumn('content', 'description');
-        });
+        // Check if content column exists before renaming back
+        if (Schema::hasColumn('comments', 'content') && !Schema::hasColumn('comments', 'description')) {
+            Schema::table('comments', function (Blueprint $table) {
+                $table->renameColumn('content', 'description');
+            });
+        }
     }
 };

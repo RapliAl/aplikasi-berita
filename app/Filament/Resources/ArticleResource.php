@@ -53,7 +53,7 @@ class ArticleResource extends Resource
                     ->label('Tags')
                     ->multiple()
                     ->options(fn () => \App\Models\Tag::all()->pluck('name', 'id'))
-                    ->dehydrated(false)
+                    // ->dehydrated(false)
                     ->afterStateUpdated(function ($state, $record) {
                         if ($record && $state) {
                             $record->tags()->sync($state);
@@ -81,15 +81,19 @@ class ArticleResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image_content')
                     ->label('Image'),
+
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Author')
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('category_id')
                     ->label('Category')
                     ->formatStateUsing(fn ($state) => Category::find($state)->name ?? 'N/A'),
+
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -97,14 +101,27 @@ class ArticleResource extends Resource
                         'published' => 'success',
                         'archived' => 'danger',
                     }),
+
+                Tables\Columns\TextColumn::make('comments_count')
+                    ->counts('comments')
+                    ->label('Comments')
+                    ->badge(),
+
+                Tables\Columns\TextColumn::make('likes_count')
+                    ->counts('likes')
+                    ->label('Likes'),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
+            ->reorderable('title')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
@@ -112,13 +129,16 @@ class ArticleResource extends Resource
                         'published' => 'Published',
                         'archived' => 'Archived',
                     ]),
+
                 Tables\Filters\SelectFilter::make('category_id ')
                     ->label('Category')
-                    ->options(Category::all()->pluck('name', 'id'))
+                    ->options(Category::all()->pluck('name', 'id')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+
                 Tables\Actions\EditAction::make(),
+
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -128,8 +148,9 @@ class ArticleResource extends Resource
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 // If user is Author, only show their own articles
-                if (!Auth::user()->can('edit-articles')) {
+                if (!Auth::user()->can('update-article')) {
                     $query->where('user_id', Auth::id());
+                    // $query->except('comments_count');
                 }
                 return $query;
             });
@@ -137,18 +158,19 @@ class ArticleResource extends Resource
 
     public static function canAccess(): bool
     {
-        return Auth::user()->can('view-articles');
+        return Auth::user()->can('view_any_article');
     }
 
     public static function canCreate(): bool
     {
-        return Auth::user()->can('create-articles');
+        return Auth::user()->can('create_article');
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\CommentRelationManager::class,
+            RelationManagers\LikeRelationManager::class,
         ];
     }
 

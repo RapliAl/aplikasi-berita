@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
-Route::get('/categories/{category:slug}', [ArticleController::class, 'byCategory'])->name('articles.category_id');
+Route::get('/categories/{category:slug}', [ArticleController::class, 'byCategory'])->name('articles.category');
 Route::get('/tags/{tag:slug}', [ArticleController::class, 'byTag'])->name('articles.tag');
 
 // Authenticated Frontend Routes

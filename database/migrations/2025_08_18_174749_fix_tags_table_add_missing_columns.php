@@ -11,18 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tags', function (Blueprint $table) {
-            if (!Schema::hasColumn('tags', 'name')) {
-                $table->string('name')->unique()->after('id');
-            }
-            if (!Schema::hasColumn('tags', 'slug')) {
-                $table->string('slug')->unique()->after('name');
-            }
-        });
+        // This migration was created to fix missing columns, but the columns already exist
+        // in the original create_tags_table migration. No action needed.
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrationsss
      */
     public function down(): void
     {

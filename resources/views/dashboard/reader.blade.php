@@ -94,7 +94,7 @@
 
                     <div class="space-y-4">
                         @forelse($recommendedArticles ?? [] as $article)
-                        <div class="group border border-gray-100 rounded-lg p-4 hover:bg-gray-50 transition-colors duration-200 cursor-pointer">
+                        <a href="{{ route('articles.show', $article->slug) }}" class="block group border border-gray-100 rounded-lg p-4 hover:bg-gray-50 transition-colors duration-200 cursor-pointer">
                             <div class="flex space-x-4">
                                 <div class="flex-shrink-0">
                                     <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         @empty
                         <div class="text-center py-12">
                             <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
