@@ -140,7 +140,7 @@
             <!-- Sidebar -->
             <div class="space-y-6">
                 <!-- Kategori Favorit -->
-                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                {{-- <div class="bg-white rounded-lg border border-gray-200 p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Kategori Favorit</h3>
                     <div class="space-y-3">
                         @forelse($favoriteCategories ?? [] as $category)
@@ -152,7 +152,7 @@
                         <p class="text-gray-500 text-center py-4 text-sm">Belum ada kategori favorit</p>
                         @endforelse
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Artikel Trending -->
                 <div class="bg-white rounded-lg border border-gray-200 p-6">
@@ -175,7 +175,7 @@
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="bg-white rounded-lg border border-gray-200 p-6">
+                {{-- <div class="bg-white rounded-lg border border-gray-200 p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                     <div class="space-y-3">
                         <a href="{{ route('home') }}" class="flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200">
@@ -200,7 +200,7 @@
                             <span class="text-gray-700 font-medium">Pengaturan</span>
                         </a>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 

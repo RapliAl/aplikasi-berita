@@ -157,11 +157,12 @@
                             </h2>
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-gray-500">Sort by:</span>
-                                <select
+                                <select id="sortSelect" onchange="applySorting()"
                                     class="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                    <option>Latest</option>
-                                    <option>Popular</option>
-                                    <option>Most Commented</option>
+                                    <option value="latest" {{ request('sort') == 'latest' || !request('sort') ? 'selected' : '' }}>Latest</option>
+                                    <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Popular</option>
+                                    <option value="most_commented" {{ request('sort') == 'most_commented' ? 'selected' : '' }}>Most Commented</option>
+                                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest</option>
                                 </select>
                             </div>
                         </div>
@@ -379,7 +380,7 @@
                                                                     stroke-width="2"
                                                                     d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                                             </svg>
-                                                            {{-- {{ $article->comments->count() }} --}}
+                                                            {{ $article->comments->count() }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -567,7 +568,7 @@
                     </div>
 
                     <!-- Quick Links -->
-                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                    {{-- <div class="bg-white rounded-2xl shadow-lg p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -613,7 +614,7 @@
                                     Terms of Service
                                 </a></li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -741,5 +742,14 @@
                 progressBar.style.width = scrollPercent + '%';
             });
         });
+
+        // Function to handle sorting
+        function applySorting() {
+            const sortValue = document.getElementById('sortSelect').value;
+            const url = new URL(window.location.href);
+            url.searchParams.set('sort', sortValue);
+            url.searchParams.delete('page'); // Reset to first page when sorting
+            window.location.href = url.toString();
+        }
     </script>
 @endsection

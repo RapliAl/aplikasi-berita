@@ -17,17 +17,40 @@ class ArticleController extends Controller
     /**
      * Display a listing of published articles.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::with(['user', 'category', 'tags'])
-            ->where('status', 'published')
-            ->latest()
-            ->paginate(12);
+        $sortBy = $request->get('sort', 'latest');
+        
+        $query = Article::with(['user', 'category', 'tags', 'likes', 'comments'])
+            ->where('status', 'published');
+
+        // Apply sorting based on the sort parameter
+        switch ($sortBy) {
+            case 'popular':
+                $query->withCount('likes')
+                      ->orderBy('likes_count', 'desc')
+                      ->orderBy('created_at', 'desc');
+                break;
+            case 'most_commented':
+                $query->withCount('comments')
+                      ->orderBy('comments_count', 'desc')
+                      ->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'latest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $articles = $query->paginate(12)->appends($request->query());
 
         $categories = Category::withCount('articles')->get();
         $tags = Tag::withCount('articles')->get();
 
-        return view('frontend.articles.index', compact('articles', 'categories', 'tags'));
+        return view('frontend.articles.index', compact('articles', 'categories', 'tags', 'sortBy'));
     }
 
     /**
@@ -138,37 +161,83 @@ class ArticleController extends Controller
     /**
      * Display articles by category.
      */
-    public function byCategory(Category $category)
+    public function byCategory(Category $category, Request $request)
     {
-        $articles = Article::with(['user', 'category', 'tags'])
+        $sortBy = $request->get('sort', 'latest');
+        
+        $query = Article::with(['user', 'category', 'tags', 'likes', 'comments'])
             ->where('category_id', $category->id)
-            ->where('status', 'published')
-            ->latest()
-            ->paginate(12);
+            ->where('status', 'published');
+
+        // Apply sorting based on the sort parameter
+        switch ($sortBy) {
+            case 'popular':
+                $query->withCount('likes')
+                      ->orderBy('likes_count', 'desc')
+                      ->orderBy('created_at', 'desc');
+                break;
+            case 'most_commented':
+                $query->withCount('comments')
+                      ->orderBy('comments_count', 'desc')
+                      ->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'latest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $articles = $query->paginate(12)->appends($request->query());
 
         $otherCategories = Category::withCount('articles')
             ->where('id', '!=', $category->id)
             ->get();
 
-        return view('frontend.articles.category', compact('articles', 'category', 'otherCategories'));
+        return view('frontend.articles.category', compact('articles', 'category', 'otherCategories', 'sortBy'));
     }
 
     /**
      * Display articles by tag.
      */
-    public function byTag(Tag $tag)
+    public function byTag(Tag $tag, Request $request)
     {
-        $articles = $tag->articles()
-            ->with(['user', 'category', 'tags'])
-            ->where('status', 'published')
-            ->latest()
-            ->paginate(12);
+        $sortBy = $request->get('sort', 'latest');
+        
+        $query = $tag->articles()
+            ->with(['user', 'category', 'tags', 'likes', 'comments'])
+            ->where('status', 'published');
+
+        // Apply sorting based on the sort parameter
+        switch ($sortBy) {
+            case 'popular':
+                $query->withCount('likes')
+                      ->orderBy('likes_count', 'desc')
+                      ->orderBy('created_at', 'desc');
+                break;
+            case 'most_commented':
+                $query->withCount('comments')
+                      ->orderBy('comments_count', 'desc')
+                      ->orderBy('created_at', 'desc');
+                break;
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'latest':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $articles = $query->paginate(12)->appends($request->query());
 
         $popularTags = Tag::withCount('articles')
             ->orderBy('articles_count', 'desc')
             ->limit(10)
             ->get();
 
-        return view('frontend.articles.tag', compact('articles', 'tag', 'popularTags'));
+        return view('frontend.articles.tag', compact('articles', 'tag', 'popularTags', 'sortBy'));
     }
 }
