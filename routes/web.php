@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Frontend\ArticleController;
+use App\Http\Controllers\GoogleLoginController;
 use Illuminate\Support\Facades\Route;
 
 // Frontend Routes (for Reader role)
@@ -25,5 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/auth/google/redirect', [GoogleLoginController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleLoginController::class, 'callback'])->name('google.callback');
+
 
 require __DIR__.'/auth.php';

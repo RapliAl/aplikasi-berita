@@ -11,9 +11,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Model;
 
 class ArticleResource extends Resource
 {
@@ -104,9 +104,7 @@ class ArticleResource extends Resource
 
                 Tables\Columns\TextColumn::make('comments_count')
                     ->counts('comments')
-                    ->label('Comments')
-                    ->badge(),
-
+                    ->label('Comments'),
                 Tables\Columns\TextColumn::make('likes_count')
                     ->counts('likes')
                     ->label('Likes'),
@@ -178,6 +176,7 @@ class ArticleResource extends Resource
     {
         return [
             'index' => Pages\ListArticles::route('/'),
+            'view' => Pages\ViewArticle::route('/{record}'),
             'create' => Pages\CreateArticle::route('/create'),
             'edit' => Pages\EditArticle::route('/{record}/edit'),
         ];
